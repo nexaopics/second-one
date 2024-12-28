@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="feedback.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+</head>
+<body>
+    <div class="logo-image"></div>
+    <div class="container">
+        <h1>Feedback</h1>
+        <p>We value your input! Please share your thoughts, suggestions, or report any issues you've encountered.</p>
+        
+        <form id="feedbackForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="feedbackType">Feedback Type:</label>
+                <select id="feedbackType" name="feedbackType" required>
+                    <option value="">Select a type</option>
+                    <option value="suggestion">Suggestion</option>
+                    <option value="issue">Report an Issue</option>
+                    <option value="compliment">Wrong answer</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Your Feedback:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+
+    <script src="feedback.js"></script>
+</body>
+</html>

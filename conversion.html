@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="conversion.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Conversion</title>
+</head>
+<body>
+    <div class="logo-image"></div>
+    <div class="main">
+        <div class="container">
+            <h1><u>Number Conversion</u></h1>
+            <p>Welcome to the number conversion tool.<br> <br>You can convert decimal, binary, octal, and hexadecimal numbers. Negative numbers are not allowed.</p>
+        </div>
+
+        <!-- Decimal Input -->
+        <div class="search-container">
+            <input type="number" step="any" class="srch" placeholder="Enter Decimal Number" id="decimalNumber">
+            <button class="btn" onclick="convertDecimal()">Convert</button>
+        </div>
+
+        <div id="conversionResults" class="container" style="display:none;">
+            <h2>Conversion Results</h2>
+            <p><strong>Binary:</strong> <span id="binaryResult"></span></p>
+            <p><strong>Octal:</strong> <span id="octalResult"></span></p>
+            <p><strong>Hexadecimal:</strong> <span id="hexResult"></span></p>
+        </div>
+
+        <!-- Binary Input -->
+        <div class="search-container">
+            <input type="text" class="srch" placeholder="Enter Binary Number" id="binaryNumber">
+            <button class="btn" onclick="convertBinary()">Convert</button>
+        </div>
+
+        <div id="binaryConversionResults" class="container" style="display:none;">
+            <h2>Binary Conversion Results</h2>
+            <p><strong>Decimal:</strong> <span id="decimalFromBinaryResult"></span></p>
+            <p><strong>Octal:</strong> <span id="octalFromBinaryResult"></span></p>
+            <p><strong>Hexadecimal:</strong> <span id="hexFromBinaryResult"></span></p>
+        </div>
+
+        <!-- Octal Input -->
+        <div class="search-container">
+            <input type="text" class="srch" placeholder="Enter Octal Number" id="octalNumber">
+            <button class="btn" onclick="convertOctal()">Convert</button>
+        </div>
+
+        <div id="octalConversionResults" class="container" style="display:none;">
+            <h2>Octal Conversion Results</h2>
+            <p><strong>Decimal:</strong> <span id="decimalFromOctalResult"></span></p>
+            <p><strong>Binary:</strong> <span id="binaryFromOctalResult"></span></p>
+            <p><strong>Hexadecimal:</strong> <span id="hexFromOctalResult"></span></p>
+        </div>
+
+        <!-- Hexadecimal Input -->
+        <div class="search-container">
+            <input type="text" class="srch" placeholder="Enter Hexadecimal Number" id="hexNumber">
+            <button class="btn" onclick="convertHex()">Convert</button>
+        </div>
+
+        <div id="hexConversionResults" class="container" style="display:none;">
+            <h2>Hexadecimal Conversion Results</h2>
+            <p><strong>Decimal:</strong> <span id="decimalFromHexResult"></span></p>
+            <p><strong>Binary:</strong> <span id="binaryFromHexResult"></span></p>
+            <p><strong>Octal:</strong> <span id="octalFromHexResult"></span></p>
+        </div>
+
+        <script>
+            // Function to convert decimal to binary, octal, and hexadecimal
+            function convertDecimal() {
+                const decimalNumber = parseFloat(document.getElementById('decimalNumber').value);
+
+                // Check if the number is negative
+                if (decimalNumber < 0) {
+                    alert("Negative numbers are not allowed.");
+                    return;
+                }
+
+                const [integerPart, fractionalPart] = decimalNumber.toString().split('.').map(Number);
+
+                // Convert integer part
+                const binaryResult = integerPart.toString(2);
+                const octalResult = integerPart.toString(8);
+                const hexResult = integerPart.toString(16).toUpperCase();
+
+                // Convert fractional part (if any)
+                let binaryFraction = '', octalFraction = '', hexFraction = '';
+                if (fractionalPart) {
+                    binaryFraction = convertFraction(fractionalPart, 2);
+                    octalFraction = convertFraction(fractionalPart, 8);
+                    hexFraction = convertFraction(fractionalPart, 16);
+                }
+
+                // Display results
+                document.getElementById('binaryResult').innerText = binaryResult + (binaryFraction ? '.' + binaryFraction : '');
+                document.getElementById('octalResult').innerText = octalResult + (octalFraction ? '.' + octalFraction : '');
+                document.getElementById('hexResult').innerText = hexResult + (hexFraction ? '.' + hexFraction : '');
+
+                document.getElementById('conversionResults').style.display = 'block';
+            }
+
+            // Helper function to convert fractional part to binary, octal, or hex
+            function convertFraction(frac, base) {
+                let result = '';
+                let limit = 6; // Limit precision to 6 places
+                while (frac > 0 && limit > 0) {
+                    frac *= base;
+                    const digit = Math.floor(frac);
+                    result += digit.toString(base);
+                    frac -= digit;
+                    limit--;
+                }
+                return result;
+            }
+
+            // Function to convert binary to decimal, octal, and hexadecimal
+            function convertBinary() {
+                const binaryNumber = document.getElementById('binaryNumber').value;
+
+                // Check if the number is negative
+                if (binaryNumber.includes('-')) {
+                    alert("Negative numbers are not allowed.");
+                    return;
+                }
+
+                const [integerPart, fractionalPart] = binaryNumber.split('.');
+                let decimalResult = parseInt(integerPart, 2);
+
+                // Convert fractional part if any
+                if (fractionalPart) {
+                    decimalResult += convertFractionBinary(fractionalPart);
+                }
+
+                const octalResult = decimalResult.toString(8);
+                const hexResult = decimalResult.toString(16).toUpperCase();
+
+                // Display results
+                document.getElementById('decimalFromBinaryResult').innerText = decimalResult;
+                document.getElementById('octalFromBinaryResult').innerText = octalResult;
+                document.getElementById('hexFromBinaryResult').innerText = hexResult;
+
+                document.getElementById('binaryConversionResults').style.display = 'block';
+            }
+
+            // Helper function to convert fractional binary to decimal
+            function convertFractionBinary(frac) {
+                let result = 0;
+                for (let i = 0; i < frac.length; i++) {
+                    result += parseInt(frac[i]) * Math.pow(2, -(i + 1));
+                }
+                return result;
+            }
+
+            // Function to convert octal to decimal, binary, and hexadecimal
+            function convertOctal() {
+                const octalNumber = document.getElementById('octalNumber').value;
+
+                // Check if the number is negative
+                if (octalNumber.includes('-')) {
+                    alert("Negative numbers are not allowed.");
+                    return;
+                }
+
+                const [integerPart, fractionalPart] = octalNumber.split('.');
+                let decimalResult = parseInt(integerPart, 8);
+
+                // Convert fractional part if any
+                if (fractionalPart) {
+                    decimalResult += convertFractionOctal(fractionalPart);
+                }
+
+                const binaryResult = decimalResult.toString(2);
+                const hexResult = decimalResult.toString(16).toUpperCase();
+
+                // Display results
+                document.getElementById('decimalFromOctalResult').innerText = decimalResult;
+                document.getElementById('binaryFromOctalResult').innerText = binaryResult;
+                document.getElementById('hexFromOctalResult').innerText = hexResult;
+
+                document.getElementById('octalConversionResults').style.display = 'block';
+            }
+
+            // Helper function to convert fractional octal to decimal
+            function convertFractionOctal(frac) {
+                let result = 0;
+                for (let i = 0; i < frac.length; i++) {
+                    result += parseInt(frac[i]) * Math.pow(8, -(i + 1));
+                }
+                return result;
+            }
+
+            // Function to convert hexadecimal to decimal, binary, and octal
+            function convertHex() {
+                const hexNumber = document.getElementById('hexNumber').value;
+
+                // Check if the number is negative
+                if (hexNumber.includes('-')) {
+                    alert("Negative numbers are not allowed.");
+                    return;
+                }
+
+                const [integerPart, fractionalPart] = hexNumber.split('.');
+                let decimalResult = parseInt(integerPart, 16);
+
+                // Convert fractional part if any
+                if (fractionalPart) {
+                    decimalResult += convertFractionHex(fractionalPart);
+                }
+
+                const binaryResult = decimalResult.toString(2);
+                const octalResult = decimalResult.toString(8);
+
+                // Display results
+                document.getElementById('decimalFromHexResult').innerText = decimalResult;
+                document.getElementById('binaryFromHexResult').innerText = binaryResult;
+                document.getElementById('octalFromHexResult').innerText = octalResult;
+
+                document.getElementById('hexConversionResults').style.display = 'block';
+            }
+
+            // Helper function to convert fractional hexadecimal to decimal
+            function convertFractionHex(frac) {
+                let result = 0;
+                for (let i = 0; i < frac.length; i++) {
+                    const digit = parseInt(frac[i], 16);
+                    result += digit * Math.pow(16, -(i + 1));
+                }
+                return result;
+            }
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="periodic.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>periodic table </title>
+</head>
+<body>
+    <div class="logo-image"></div>
+<div class="main">
+    <div id="main">
+    <div class="container">
+    <h1><u>Periodic Table</u></h1>
+    <p>Welcome to the periodic table of elements.<br><br> You can find  information about any element by entering its atomic number.<br>Such as atomic size,atomic mass,electronic configuration,chemical properties and physical properties.</p>
+    </div>
+</div>
+<div class="search-container">
+    <input type="text" class="srch" placeholder="Enter Atomic Number" id="atomicNumber">
+    <button class="btn" onclick="searchElement()">Search</button>
+</div>
+
+<div id="elementInfo" class="container" style="display:none;">
+    <h2 id="elementName"></h2>
+    <p><strong>Atomic Size:</strong> <span id="atomicSize"></span></p>
+    <p><strong>Atomic Mass:</strong> <span id="atomicMass"></span></p>
+    <p><strong>Electronic Configuration:</strong> <span id="electronicConfig"></span></p>
+    <p><strong>Chemical Properties:</strong> <span id="chemicalProperties"></span></p>
+    <p><strong>Physical Properties:</strong> <span id="physicalProperties"></span></p>
+</div>
+
+<script>
+    const elementsData = [
+        { atomicNumber: 1, name: "Hydrogen", atomicSize: "53 pm", atomicMass: "1.008 u", electronicConfig: "1s¹", chemicalProperties: "Colorless gas, highly flammable", physicalProperties: "Gas at room temperature" },
+        { atomicNumber: 2, name: "Helium", atomicSize: "31 pm", atomicMass: "4.0026 u", electronicConfig: "1s²", chemicalProperties: "Inert gas, non-flammable", physicalProperties: "Gas at room temperature" },
+        { atomicNumber: 3, name: "Lithium", atomicSize: "152 pm", atomicMass: "6.94 u", electronicConfig: "[He] 2s¹", chemicalProperties: "Reacts with water", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 4, name: "Beryllium", atomicSize: "112 pm", atomicMass: "9.0122 u", electronicConfig: "[He] 2s²", chemicalProperties: "Reacts with acids", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 5, name: "Boron", atomicSize: "88 pm", atomicMass: "10.81 u", electronicConfig: "[He] 2s² 2p¹", chemicalProperties: "Forms covalent compounds", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 6, name: "Carbon", atomicSize: "70 pm", atomicMass: "12.011 u", electronicConfig: "[He] 2s² 2p²", chemicalProperties: "Forms organic compounds", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 7, name: "Nitrogen", atomicSize: "65 pm", atomicMass: "14.007 u", electronicConfig: "[He] 2s² 2p³", chemicalProperties: "Colorless gas, essential for life", physicalProperties: "Gas at room temperature" },
+        { atomicNumber: 8, name: "Oxygen", atomicSize: "60 pm", atomicMass: "15.999 u", electronicConfig: "[He] 2s² 2p⁴", chemicalProperties: "Supports combustion", physicalProperties: "Gas at room temperature" },
+        { atomicNumber: 9, name: "Fluorine", atomicSize: "50 pm", atomicMass: "18.998 u", electronicConfig: "[He] 2s² 2p⁵", chemicalProperties: "Most reactive non-metal", physicalProperties: "Gas at room temperature" },
+        { atomicNumber: 10, name: "Neon", atomicSize: "38 pm", atomicMass: "20.180 u", electronicConfig: "[He] 2s² 2p⁶", chemicalProperties: "Inert gas, non-reactive", physicalProperties: "Gas at room temperature" },
+        { atomicNumber: 11, name: "Sodium", atomicSize: "186 pm", atomicMass: "22.990 u", electronicConfig: "[Ne] 3s¹", chemicalProperties: "Reacts vigorously with water", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 12, name: "Magnesium", atomicSize: "160 pm", atomicMass: "24.305 u", electronicConfig: "[Ne] 3s²", chemicalProperties: "Reacts with acids", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 13, name: "Aluminum", atomicSize: "143 pm", atomicMass: "26.982 u", electronicConfig: "[Ne] 3s² 3p¹", chemicalProperties: "Forms oxide layer", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 14, name: "Silicon", atomicSize: "118 pm", atomicMass: "28.085 u", electronicConfig: "[Ne] 3s² 3p²", chemicalProperties: "Semiconductor", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 15, name: "Phosphorus", atomicSize: "110 pm", atomicMass: "30.974 u", electronicConfig: "[Ne] 3s² 3p³", chemicalProperties: "Reactive non-metal", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 16, name: "Sulfur", atomicSize: "104 pm", atomicMass: "32.06 u", electronicConfig: "[Ne] 3s² 3p⁴", chemicalProperties: "Forms sulfide compounds", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 17, name: "Chlorine", atomicSize: "99 pm", atomicMass: "35.45 u", electronicConfig: "[Ne] 3s² 3p⁵", chemicalProperties: "Highly reactive gas", physicalProperties: "Gas at room temperature" },
+        { atomicNumber: 18, name: "Argon", atomicSize: "71 pm", atomicMass: "39.948 u", electronicConfig: "[Ne] 3s² 3p⁶", chemicalProperties: "Inert gas", physicalProperties: "Gas at room temperature" },
+        { atomicNumber: 19, name: "Potassium", atomicSize: "227 pm", atomicMass: "39.098 u", electronicConfig: "[Ar] 4s¹", chemicalProperties: "Reacts with water", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 20, name: "Calcium", atomicSize: "197 pm", atomicMass: "40.078 u", electronicConfig: "[Ar] 4s²", chemicalProperties: "Reacts with water", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 21, name: "Scandium", atomicSize: "162 pm", atomicMass: "44.956 u", electronicConfig: "[Ar] 3d¹ 4s²", chemicalProperties: "Forms alloys", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 22, name: "Titanium", atomicSize: "147 pm", atomicMass: "47.867 u", electronicConfig: "[Ar] 3d² 4s²", chemicalProperties: "Corrosion resistant", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 23, name: "Vanadium", atomicSize: "134 pm", atomicMass: "50.9415 u", electronicConfig: "[Ar] 3d³ 4s²", chemicalProperties: "Forms strong alloys", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 24, name: "Chromium", atomicSize: "128 pm", atomicMass: "51.9961 u", electronicConfig: "[Ar] 3d⁵ 4s¹", chemicalProperties: "Highly resistant to corrosion", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 25, name: "Manganese", atomicSize: "127 pm", atomicMass: "54.938 u", electronicConfig: "[Ar] 3d⁵ 4s²", chemicalProperties: "Used in steel production", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 26, name: "Iron", atomicSize: "126 pm", atomicMass: "55.845 u", electronicConfig: "[Ar] 3d⁶ 4s²", chemicalProperties: "Reacts with oxygen", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 27, name: "Cobalt", atomicSize: "125 pm", atomicMass: "58.933 u", electronicConfig: "[Ar] 3d⁷ 4s²", chemicalProperties: "Forms alloys", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 28, name: "Nickel", atomicSize: "124 pm", atomicMass: "58.6934 u", electronicConfig: "[Ar] 3d⁸ 4s²", chemicalProperties: "Corrosion resistant", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 29, name: "Copper", atomicSize: "128 pm", atomicMass: "63.546 u", electronicConfig: "[Ar] 3d¹⁰ 4s¹", chemicalProperties: "Conducts electricity", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 30, name: "Zinc", atomicSize: "139 pm", atomicMass: "65.38 u", electronicConfig: "[Ar] 3d¹⁰ 4s²", chemicalProperties: "Used in galvanization", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 31, name: "Gallium", atomicSize: "135 pm", atomicMass: "69.723 u", electronicConfig: "[Ar] 3d¹⁰ 4s² 4p¹", chemicalProperties: "Melts in hand", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 32, name: "Germanium", atomicSize: "125 pm", atomicMass: "72.630 u", electronicConfig: "[Ar] 3d¹⁰ 4s² 4p²", chemicalProperties: "Semiconductor", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 33, name: "Arsenic", atomicSize: "115 pm", atomicMass: "74.9216 u", electronicConfig: "[Ar] 3d¹⁰ 4s² 4p³", chemicalProperties: "Toxic, used in alloys", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 34, name: "Selenium", atomicSize: "116 pm", atomicMass: "78.971 u", electronicConfig: "[Ar] 3d¹⁰ 4s² 4p⁴", chemicalProperties: "Used in photocells", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 35, name: "Bromine", atomicSize: "114 pm", atomicMass: "79.904 u", electronicConfig: "[Ar] 3d¹⁰ 4s² 4p⁵", chemicalProperties: "Liquid at room temperature", physicalProperties: "Red-brown liquid" },
+        { atomicNumber: 36, name: "Krypton", atomicSize: "88 pm", atomicMass: "83.798 u", electronicConfig: "[Ar] 3d¹⁰ 4s² 4p⁶", chemicalProperties: "Inert gas", physicalProperties: "Gas at room temperature" },
+        { atomicNumber: 37, name: "Rubidium", atomicSize: "248 pm", atomicMass: "85.4678 u", electronicConfig: "[Kr] 5s¹", chemicalProperties: "Highly reactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 38, name: "Strontium", atomicSize: "215 pm", atomicMass: "87.62 u", electronicConfig: "[Kr] 5s²", chemicalProperties: "Reacts with water", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 39, name: "Yttrium", atomicSize: "180 pm", atomicMass: "88.905 u", electronicConfig: "[Kr] 4d¹ 5s²", chemicalProperties: "Used in LEDs", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 40, name: "Zirconium", atomicSize: "160 pm", atomicMass: "91.224 u", electronicConfig: "[Kr] 4d² 5s²", chemicalProperties: "Corrosion resistant", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 41, name: "Niobium", atomicSize: "146 pm", atomicMass: "92.906 u", electronicConfig: "[Kr] 4d⁴ 5s²", chemicalProperties: "Used in superconductors", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 42, name: "Molybdenum", atomicSize: "139 pm", atomicMass: "95.95 u", electronicConfig: "[Kr] 4d⁵ 5s¹", chemicalProperties: "High melting point", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 43, name: "Technetium", atomicSize: "138 pm", atomicMass: "98 u", electronicConfig: "[Kr] 4d⁵", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 44, name: "Ruthenium", atomicSize: "134 pm", atomicMass: "101.07 u", electronicConfig: "[Kr] 4d⁷ 5s¹", chemicalProperties: "Used in electronics", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 45, name: "Rhodium", atomicSize: "127 pm", atomicMass: "102.905 u", electronicConfig: "[Kr] 4d⁸ 5s¹", chemicalProperties: "Highly reflective", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 46, name: "Palladium", atomicSize: "125 pm", atomicMass: "106.42 u", electronicConfig: "[Kr] 4d¹⁰", chemicalProperties: "Used in catalytic converters", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 47, name: "Silver", atomicSize: "144 pm", atomicMass: "107.8682 u", electronicConfig: "[Kr] 4d¹⁰ 5s¹", chemicalProperties: "Conducts electricity", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 48, name: "Cadmium", atomicSize: "151 pm", atomicMass: "112.414 u", electronicConfig: "[Kr] 4d¹⁰ 5s²", chemicalProperties: "Toxic, used in batteries", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 49, name: "Indium", atomicSize: "167 pm", atomicMass: "114.818 u", electronicConfig: "[Kr] 4d¹⁰ 5s² 5p¹", chemicalProperties: "Soft metal", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 50, name: "Tin", atomicSize: "140 pm", atomicMass: "118.710 u", electronicConfig: "[Kr] 4d¹⁰ 5s² 5p²", chemicalProperties: "Used in alloys", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 51, name: "Antimony", atomicSize: "121 pm", atomicMass: "121.760 u", electronicConfig: "[Kr] 4d¹⁰ 5s² 5p³", chemicalProperties: "Used in flame retardants", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 52, name: "Tellurium", atomicSize: "120 pm", atomicMass: "127.60 u", electronicConfig: "[Kr] 4d¹⁰ 5s² 5p⁴", chemicalProperties: "Semiconductor", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 53, name: "Iodine", atomicSize: "115 pm", atomicMass: "126.9044 u", electronicConfig: "[Kr] 4d¹⁰ 5s² 5p⁵", chemicalProperties: "Used in medicine", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 54, name: "Xenon", atomicSize: "108 pm", atomicMass: "131.293 u", electronicConfig: "[Kr] 4d¹⁰ 5s² 5p⁶", chemicalProperties: "Inert gas", physicalProperties: "Gas at room temperature" },
+        { atomicNumber: 55, name: "Cesium", atomicSize: "262 pm", atomicMass: "132.905 u", electronicConfig: "[Xe] 6s¹", chemicalProperties: "Highly reactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 56, name: "Barium", atomicSize: "211 pm", atomicMass: "137.327 u", electronicConfig: "[Xe] 6s²", chemicalProperties: "Reacts with water", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 57, name: "Lanthanum", atomicSize: "187 pm", atomicMass: "138.904 u", electronicConfig: "[Xe] 5d¹ 6s²", chemicalProperties: "Used in glassmaking", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 58, name: "Cerium", atomicSize: "183 pm", atomicMass: "140.116 u", electronicConfig: "[Xe] 4f¹ 5d¹ 6s²", chemicalProperties: "Used in catalysts", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 59, name: "Praseodymium", atomicSize: "182 pm", atomicMass: "140.907 u", electronicConfig: "[Xe] 4f³ 6s²", chemicalProperties: "Used in magnets", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 60, name: "Neodymium", atomicSize: "180 pm", atomicMass: "144.242 u", electronicConfig: "[Xe] 4f⁴ 6s²", chemicalProperties: "Used in strong magnets", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 61, name: "Promethium", atomicSize: "180 pm", atomicMass: "145 u", electronicConfig: "[Xe] 4f⁵ 6s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 62, name: "Samarium", atomicSize: "178 pm", atomicMass: "150.36 u", electronicConfig: "[Xe] 4f⁶ 6s²", chemicalProperties: "Used in magnets", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 63, name: "Europium", atomicSize: "177 pm", atomicMass: "151.964 u", electronicConfig: "[Xe] 4f⁷ 6s²", chemicalProperties: "Used in phosphors", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 64, name: "Gadolinium", atomicSize: "175 pm", atomicMass: "157.25 u", electronicConfig: "[Xe] 4f⁷ 5d¹ 6s²", chemicalProperties: "Used in MRI contrast", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 65, name: "Terbium", atomicSize: "173 pm", atomicMass: "158.925 u", electronicConfig: "[Xe] 4f⁸ 6s²", chemicalProperties: "Used in phosphors", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 66, name: "Dysprosium", atomicSize: "171 pm", atomicMass: "162.500 u", electronicConfig: "[Xe] 4f⁹ 6s²", chemicalProperties: "Used in magnets", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 67, name: "Holmium", atomicSize: "169 pm", atomicMass: "164.930 u", electronicConfig: "[Xe] 4f¹⁰ 6s²", chemicalProperties: "Used in lasers", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 68, name: "Erbium", atomicSize: "167 pm", atomicMass: "167.259 u", electronicConfig: "[Xe] 4f¹¹ 6s²", chemicalProperties: "Used in lasers", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 69, name: "Thulium", atomicSize: "165 pm", atomicMass: "168.934 u", electronicConfig: "[Xe] 4f¹² 6s²", chemicalProperties: "Used in lasers", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 70, name: "Ytterbium", atomicSize: "164 pm", atomicMass: "173.04 u", electronicConfig: "[Xe] 4f¹³ 6s²", chemicalProperties: "Used in lasers", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 71, name: "Lutetium", atomicSize: "162 pm", atomicMass: "174.9668 u", electronicConfig: "[Xe] 4f¹⁴ 5d¹ 6s²", chemicalProperties: "Used in catalysts", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 72, name: "Hafnium", atomicSize: "159 pm", atomicMass: "178.49 u", electronicConfig: "[Xe] 4f¹⁴ 5d² 6s²", chemicalProperties: "Corrosion resistant", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 73, name: "Tantalum", atomicSize: "146 pm", atomicMass: "180.947 u", electronicConfig: "[Xe] 4f¹⁴ 5d³ 6s²", chemicalProperties: "Used in electronics", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 74, name: "Tungsten", atomicSize: "139 pm", atomicMass: "183.84 u", electronicConfig: "[Xe] 4f¹⁴ 5d⁴ 6s²", chemicalProperties: "High melting point", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 75, name: "Rhenium", atomicSize: "137 pm", atomicMass: "186.207 u", electronicConfig: "[Xe] 4f¹⁴ 5d⁵ 6s²", chemicalProperties: "Used in jet engines", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 76, name: "Osmium", atomicSize: "130 pm", atomicMass: "190.23 u", electronicConfig: "[Xe] 4f¹⁴ 5d⁶ 6s²", chemicalProperties: "Densest element", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 77, name: "Iridium", atomicSize: "136 pm", atomicMass: "192.217 u", electronicConfig: "[Xe] 4f¹⁴ 5d⁷ 6s²", chemicalProperties: "Highly corrosion resistant", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 78, name: "Platinum", atomicSize: "139 pm", atomicMass: "195.084 u", electronicConfig: "[Xe] 4f¹⁴ 5d⁸ 6s²", chemicalProperties: "Used in jewelry", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 79, name: "Gold", atomicSize: "144 pm", atomicMass: "196.9665 u", electronicConfig: "[Xe] 4f¹⁴ 5d¹⁰ 6s¹", chemicalProperties: "Conducts electricity", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 80, name: "Mercury", atomicSize: "156 pm", atomicMass: "200.592 u", electronicConfig: "[Xe] 4f¹⁴ 5d¹⁰ 6s²", chemicalProperties: "Liquid at room temperature", physicalProperties: "Liquid at room temperature" },
+        { atomicNumber: 81, name: "Thallium", atomicSize: "156 pm", atomicMass: "204.38 u", electronicConfig: "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p¹", chemicalProperties: "Toxic", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 82, name: "Lead", atomicSize: "175 pm", atomicMass: "207.2 u", electronicConfig: "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p²", chemicalProperties: "Toxic, used in batteries", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 83, name: "Bismuth", atomicSize: "156 pm", atomicMass: "208.9804 u", electronicConfig: "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p³", chemicalProperties: "Low toxicity", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 84, name: "Polonium", atomicSize: "150 pm", atomicMass: "209 u", electronicConfig: "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁴", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 85, name: "Astatine", atomicSize: "202 pm", atomicMass: "210 u", electronicConfig: "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁵", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 86, name: "Radon", atomicSize: "215 pm", atomicMass: "222 u", electronicConfig: "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁶", chemicalProperties: "Inert gas", physicalProperties: "Gas at room temperature" },
+        { atomicNumber: 87, name: "Francium", atomicSize: "270 pm", atomicMass: "223 u", electronicConfig: "[Rn] 7s¹", chemicalProperties: "Highly radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 88, name: "Radium", atomicSize: "200 pm", atomicMass: "226 u", electronicConfig: "[Rn] 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 89, name: "Actinium", atomicSize: "180 pm", atomicMass: "227 u", electronicConfig: "[Rn] 6d¹ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 90, name: "Thorium", atomicSize: "175 pm", atomicMass: "232.0381 u", electronicConfig: "[Rn] 6d² 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 91, name: "Protactinium", atomicSize: "160 pm", atomicMass: "231.0359 u", electronicConfig: "[Rn] 5f² 6d¹ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 92, name: "Uranium", atomicSize: "156 pm", atomicMass: "238.0289 u", electronicConfig: "[Rn] 5f³ 6d¹ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 93, name: "Neptunium", atomicSize: "150 pm", atomicMass: "237 u", electronicConfig: "[Rn] 5f⁴ 6d¹ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 94, name: "Plutonium", atomicSize: "153 pm", atomicMass: "244 u", electronicConfig: "[Rn] 5f⁶ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 95, name: "Americium", atomicSize: "150 pm", atomicMass: "243 u", electronicConfig: "[Rn] 5f⁷ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 96, name: "Curium", atomicSize: "145 pm", atomicMass: "247 u", electronicConfig: "[Rn] 5f⁷ 6d¹ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 97, name: "Berkelium", atomicSize: "140 pm", atomicMass: "247 u", electronicConfig: "[Rn] 5f⁸ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 98, name: "Californium", atomicSize: "138 pm", atomicMass: "251 u", electronicConfig: "[Rn] 5f⁹ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 99, name: "Einsteinium", atomicSize: "137 pm", atomicMass: "252 u", electronicConfig: "[Rn] 5f¹⁰ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 100, name: "Fermium", atomicSize: "136 pm", atomicMass: "257 u", electronicConfig: "[Rn] 5f¹¹ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 101, name: "Mendelevium", atomicSize: "135 pm", atomicMass: "258 u", electronicConfig: "[Rn] 5f¹² 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 102, name: "Nobelium", atomicSize: "134 pm", atomicMass: "259 u", electronicConfig: "[Rn] 5f¹³ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 103, name: "Lawrencium", atomicSize: "133 pm", atomicMass: "266 u", electronicConfig: "[Rn] 5f¹⁴ 7s² 7p¹", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 104, name: "Rutherfordium", atomicSize: "132 pm", atomicMass: "267 u", electronicConfig: "[Rn] 5f¹⁴ 6d¹ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 105, name: "Dubnium", atomicSize: "131 pm", atomicMass: "268 u", electronicConfig: "[Rn] 5f¹⁴ 6d² 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 106, name: "Seaborgium", atomicSize: "130 pm", atomicMass: "271 u", electronicConfig: "[Rn] 5f¹⁴ 6d³ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 107, name: "Bohrium", atomicSize: "129 pm", atomicMass: "270 u", electronicConfig: "[Rn] 5f¹⁴ 6d⁴ 7s²", chemicalProperties: "Radioactive", physicalProperties: "Solid at room temperature" },
+        { atomicNumber: 108, name: "Hassium", atomicSize: "128 pm", atomicMass: "277 u", electronicConfig: "[Rn] 5f¹⁴ 6d⁶ 7s²", chemicalProperties: "Radioactive, synthetic", physicalProperties: "Solid at room temperature" }
+    ];
+
+    function searchElement() {
+        const atomicNumber = document.getElementById('atomicNumber').value;
+        const element = elementsData.find(el => el.atomicNumber == atomicNumber);
+        
+        if (element) {
+            document.getElementById('elementName').innerText = element.name;
+            document.getElementById('atomicSize').innerText = element.atomicSize;
+            document.getElementById('atomicMass').innerText = element.atomicMass;
+            document.getElementById('electronicConfig').innerText = element.electronicConfig;
+            document.getElementById('chemicalProperties').innerText = element.chemicalProperties;
+            document.getElementById('physicalProperties').innerText = element.physicalProperties;
+            document.getElementById('elementInfo').style.display = 'block';
+        } else {
+            alert('Element not found. Please enter a valid atomic number (1-108).');
+            document.getElementById('elementInfo').style.display = 'none';
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+    
+</body>
+</html>

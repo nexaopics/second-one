@@ -1,0 +1,32 @@
+body{
+    background-color: black;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.container{
+    font-family: 'Times New Roman';
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 100px;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-bottom: 100px;
+    border: 10px solid rgb(195, 11, 11);
+    border-radius: 20px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+.logo-image{
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 70px;
+    height: 70px;
+    background: url(logo.jpg);
+    background-size: cover;
+}
